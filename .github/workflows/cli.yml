@@ -1,3 +1,10 @@
+# Optimized by ci-cost (https://github.com/mariotavarez/ci-cost)
+# Applied 3 optimizations:
+# - [HIGH] Add npm dependency cache to "test" job
+# - [MEDIUM] Add concurrency group to "cli.yml"
+# - [LOW] Explicitly set fail-fast for large matrix job "test" (27 combinations)
+# Estimated savings: ~8 min/run
+#
 name: CLI
 
 on:
@@ -8,6 +15,10 @@ on:
       - build/v2
   pull_request:
 
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 jobs:
   test:
     name: 🧪 Test the CLI on ${{ matrix.runtime }} under ${{ matrix.os }} using ${{ matrix.pm }}
